@@ -51,3 +51,27 @@ def parse_pyproject_toml(path: Path) -> dict[str, str]:
     return deps
 
 
+def parse_package_json(path: Path) -> dict[str, str]:
+    data = json.loads(path.read_text())
+    deps = {}
+    deps.update(data.get("dependencies", {}))
+    deps.update(data.get("devDependencies", {}))
+    return deps
+
+
+def detect_and_parse(repo_path: Path) -> tuple[dict[str, str], str]:
+    """Auto-detect dependency file and parse it. Returns (deps, ecosystem)."""
+    checks = [
+        ("requirements.txt", parse_requirements_txt, "pypi"),
+        ("pyproject.toml", parse_pyproject_toml, "pypi"),
+        ("package.json", parse_package_json, "npm"),
+    ]
+    for filename, parser, ecosystem in checks:
+        candidate = repo_path / filename
+        if candidate.exists():
+            return parser(candidate), ecosystem
+    return {}, "unknown"
+
+
+
+
