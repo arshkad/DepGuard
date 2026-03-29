@@ -71,7 +71,24 @@ def detect_and_parse(repo_path: Path) -> tuple[dict[str, str], str]:
         if candidate.exists():
             return parser(candidate), ecosystem
     return {}, "unknown"
+    
+# ── OSV Vulnerability Lookup ─────────────────────────────────────────────────
 
+def query_osv(package_name: str, ecosystem: str) -> list[dict]:
+    """Query OSV.dev for known vulnerabilities."""
+    eco_map = {"pypi": "PyPI", "npm": "npm"}
+    eco = eco_map.get(ecosystem, "PyPI")
+    try:
+        resp = requests.post(
+            "https://api.osv.dev/v1/query",
+            json={"package": {"name": package_name, "ecosystem": eco}},
+            timeout=10,
+        )
+        if resp.status_code == 200:
+            return resp.json().get("vulns", [])
+    except requests.RequestException:
+        pass
+    return []
 
 
 
