@@ -71,7 +71,7 @@ def detect_and_parse(repo_path: Path) -> tuple[dict[str, str], str]:
         if candidate.exists():
             return parser(candidate), ecosystem
     return {}, "unknown"
-    
+
 # ── OSV Vulnerability Lookup ─────────────────────────────────────────────────
 
 def query_osv(package_name: str, ecosystem: str) -> list[dict]:
@@ -89,6 +89,34 @@ def query_osv(package_name: str, ecosystem: str) -> list[dict]:
     except requests.RequestException:
         pass
     return []
+
+# ── PyPI Metadata ────────────────────────────────────────────────────────────
+
+def get_pypi_metadata(package_name: str) -> dict:
+    """Fetch package metadata from PyPI."""
+    try:
+        resp = requests.get(
+            f"https://pypi.org/pypi/{package_name}/json", timeout=10
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            info = data.get("info", {})
+            releases = data.get("releases", {})
+            latest_version = info.get("version", "unknown")
+            latest_release = releases.get(latest_version, [{}])
+            upload_time = None
+            if latest_release:
+                upload_time = latest_release[-1].get("upload_time", None)
+            return {
+                "version": latest_version,
+                "last_release": upload_time,
+                "home_page": info.get("home_page") or info.get("project_url"),
+                "license": info.get("license", "Unknown"),
+                "summary": info.get("summary", ""),
+            }
+    except requests.RequestException:
+        pass
+    return {}
 
 
 
