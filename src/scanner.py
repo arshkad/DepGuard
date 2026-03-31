@@ -196,6 +196,56 @@ def score_package(vulns: list, maintenance: str, license_risk: str) -> tuple[int
 
     return score, level
 
+# ── Main Scan Orchestrator ────────────────────────────────────────────────────
+
+def scan_repo(repo_path: str) -> dict:
+    path = Path(repo_path)
+    deps, ecosystem = detect_and_parse(path)
+
+    if not deps:
+        return {"error": "No supported dependency file found.", "results": []}
+
+    results = []
+    for package, pinned_version in deps.items():
+        meta = get_pypi_metadata(package) if ecosystem == "pypi" else {}
+        vulns = query_osv(package, ecosystem)
+        maintenance = check_abandonment(meta.get("last_release"))
+        license_risk = assess_license_risk(meta.get("license", ""))
+        score, level = score_package(vulns, maintenance, license_risk)
+
+        results.append({
+            "package": package,
+            "pinned_version": pinned_version,
+            "latest_version": meta.get("version", "unknown"),
+            "vulnerability_count": len(vulns),
+            "vulnerabilities": [
+                {
+                    "id": v.get("id", ""),
+                    "summary": v.get("summary", "")[:120],
+                    "severity": v.get("database_specific", {}).get("severity", "UNKNOWN"),
+                }
+                for v in vulns[:5]  # cap at 5 per package
+            ],
+            "maintenance": maintenance,
+            "last_release": meta.get("last_release", "unknown"),
+            "license": meta.get("license", "Unknown"),
+            "license_risk": license_risk,
+            "risk_score": score,
+                        "risk_level": level,
+        })
+
+    results.sort(key=lambda x: x["risk_score"], reverse=True)
+
+    return {
+        "ecosystem": ecosystem,
+        "total_packages": len(results),
+        "critical": sum(1 for r in results if r["risk_level"] == "CRITICAL"),
+        "high": sum(1 for r in results if r["risk_level"] == "HIGH"),
+        "medium": sum(1 for r in results if r["risk_level"] == "MEDIUM"),
+        "low": sum(1 for r in results if r["risk_level"] == "LOW"),
+        "results": results,
+    }
+
 
 
 
