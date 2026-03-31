@@ -38,3 +38,43 @@ def generate_ai_summary(scan_data: dict, api_key: str) -> str:
                 ],
             }
             for r in top_risky
+                }
+
+    system_prompt = (
+        "You are a senior application security engineer. "
+        "You receive structured dependency scan results and write a concise, "
+        "actionable risk summary for developers. Be specific: name packages, "
+        "CVEs, and concrete remediation steps. Keep it under 300 words. "
+        "Use plain text only — no markdown headers or bullet symbols."
+    )
+
+    user_prompt = (
+        f"Here are the dependency scan results:\n\n"
+        f"{json.dumps(prompt_data, indent=2)}\n\n"
+        "Write a clear risk summary covering: overall posture, the top 3 most "
+        "urgent issues and why, and immediate next steps the developer should take."
+    )
+
+    try:
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": "claude-sonnet-4-20250514",
+                "max_tokens": 512,
+                "system": system_prompt,
+                "messages": [{"role": "user", "content": user_prompt}],
+            },
+            timeout=30,
+        )
+        resp.raise_for_status()
+        content = resp.json().get("content", [])
+        return " ".join(block["text"] for block in content if block["type"] == "text")
+    except requests.RequestException as e:
+        return f"[AI summary unavailable: {e}]"
+
+
