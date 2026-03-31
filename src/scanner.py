@@ -118,5 +118,50 @@ def get_pypi_metadata(package_name: str) -> dict:
         pass
     return {}
 
+# ── License Risk ─────────────────────────────────────────────────────────────
+
+RISKY_LICENSES = {
+    "GPL-3.0", "GPL-2.0", "AGPL-3.0", "LGPL-3.0",
+    "LGPL-2.1", "CC-BY-SA-4.0", "EUPL-1.2",
+}
+SAFE_LICENSES = {
+    "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause",
+    "ISC", "Unlicense", "CC0-1.0", "PSF",
+}
+
+
+def assess_license_risk(license_str: str) -> str:
+    if not license_str or license_str == "Unknown":
+        return "unknown"
+    for lic in RISKY_LICENSES:
+        if lic.lower() in license_str.lower():
+            return "high"
+    for lic in SAFE_LICENSES:
+        if lic.lower() in license_str.lower():
+            return "low"
+    return "medium"
+
+
+# ── Abandonment Detection ────────────────────────────────────────────────────
+
+def check_abandonment(last_release: Optional[str]) -> str:
+    """Return 'active', 'stale', or 'abandoned' based on last release date."""
+    if not last_release:
+        return "unknown"
+    from datetime import datetime, timezone
+    try:
+        release_dt = datetime.fromisoformat(last_release.replace("Z", "+00:00"))
+        now = datetime.now(timezone.utc)
+        days_since = (now - release_dt).days
+        if days_since < 365:
+            return "active"
+        elif days_since < 730:
+            return "stale"
+        else:
+            return "abandoned"
+    except ValueError:
+        return "unknown"
+
+
 
 
