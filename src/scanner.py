@@ -162,6 +162,41 @@ def check_abandonment(last_release: Optional[str]) -> str:
     except ValueError:
         return "unknown"
 
+# ── Per-Package Risk Score ────────────────────────────────────────────────────
+
+def score_package(vulns: list, maintenance: str, license_risk: str) -> tuple[int, str]:
+    """
+    Returns (score 0-100, risk_level).
+    Higher score = higher risk.
+    """
+    score = 0
+
+    # Vulnerability scoring
+    severity_map = {"CRITICAL": 40, "HIGH": 25, "MEDIUM": 10, "LOW": 5}
+    for v in vulns:
+        sev = v.get("database_specific", {}).get("severity", "MEDIUM").upper()
+        score += severity_map.get(sev, 10)
+
+    # Maintenance scoring
+    score += {"abandoned": 30, "stale": 15, "unknown": 10, "active": 0}.get(maintenance, 0)
+
+    # License scoring
+    score += {"high": 20, "medium": 10, "unknown": 5, "low": 0}.get(license_risk, 0)
+
+    score = min(score, 100)
+
+    if score >= 60:
+        level = "CRITICAL"
+    elif score >= 35:
+        level = "HIGH"
+    elif score >= 15:
+        level = "MEDIUM"
+    else:
+        level = "LOW"
+
+    return score, level
+
+
 
 
 
