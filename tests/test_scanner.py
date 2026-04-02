@@ -74,6 +74,24 @@ def test_abandoned_package():
 
 def test_no_release_date():
     assert check_abandonment(None) == "unknown"
+# ── Score tests ───────────────────────────────────────────────────────────────
+
+def test_score_clean_package():
+    score, level = score_package([], "active", "low")
+    assert score == 0
+    assert level == "LOW"
+
+def test_score_risky_package():
+    vulns = [{"database_specific": {"severity": "CRITICAL"}}] * 2
+    score, level = score_package(vulns, "abandoned", "high")
+    assert score >= 60
+    assert level == "CRITICAL"
+
+def test_score_medium():
+    vulns = [{"database_specific": {"severity": "MEDIUM"}}]
+    score, level = score_package(vulns, "stale", "low")
+    assert level in ("MEDIUM", "HIGH")
+
 
 
 
