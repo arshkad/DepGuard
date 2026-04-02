@@ -91,6 +91,33 @@ def test_score_medium():
     vulns = [{"database_specific": {"severity": "MEDIUM"}}]
     score, level = score_package(vulns, "stale", "low")
     assert level in ("MEDIUM", "HIGH")
+    
+# ── HTML report test ──────────────────────────────────────────────────────────
+
+def test_html_report_generates():
+    data = {
+        "ecosystem": "pypi",
+        "total_packages": 1,
+        "critical": 0, "high": 0, "medium": 1, "low": 0,
+        "results": [{
+            "package": "example-pkg",
+            "pinned_version": "==1.0.0",
+            "latest_version": "1.2.0",
+            "vulnerability_count": 1,
+            "vulnerabilities": [{"id": "CVE-2023-1234", "severity": "MEDIUM", "summary": "Test"}],
+            "maintenance": "active",
+            "last_release": "2024-01-01T00:00:00",
+            "license": "MIT",
+            "license_risk": "low",
+            "risk_score": 10,
+            "risk_level": "MEDIUM",
+        }],
+    }
+    html = generate_html_report(data)
+    assert "example-pkg" in html
+    assert "MEDIUM" in html
+    assert "CVE-2023-1234" in html
+
 
 
 
