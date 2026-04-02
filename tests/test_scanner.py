@@ -42,3 +42,41 @@ def test_parse_package_json(tmp_path):
 
 
 
+# ── License risk tests ────────────────────────────────────────────────────────
+
+def test_license_mit():
+    assert assess_license_risk("MIT") == "low"
+
+def test_license_gpl():
+    assert assess_license_risk("GPL-3.0") == "high"
+
+def test_license_unknown():
+    assert assess_license_risk("") == "unknown"
+    assert assess_license_risk("Unknown") == "unknown"
+
+
+# ── Abandonment tests ─────────────────────────────────────────────────────────
+
+def test_active_package():
+    from datetime import datetime, timezone, timedelta
+    recent = (datetime.now(timezone.utc) - timedelta(days=100)).isoformat()
+    assert check_abandonment(recent) == "active"
+
+def test_stale_package():
+    from datetime import datetime, timezone, timedelta
+    stale = (datetime.now(timezone.utc) - timedelta(days=500)).isoformat()
+    assert check_abandonment(stale) == "stale"
+
+def test_abandoned_package():
+    from datetime import datetime, timezone, timedelta
+    old = (datetime.now(timezone.utc) - timedelta(days=800)).isoformat()
+    assert check_abandonment(old) == "abandoned"
+
+def test_no_release_date():
+    assert check_abandonment(None) == "unknown"
+
+
+
+
+
+
