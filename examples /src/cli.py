@@ -113,6 +113,102 @@ def print_rich_report(data: dict, min_risk: str):
         )
 
     console.print(table)
+    # Expand CVE details for CRITICAL/HIGH
+    for r in results:
+        if r["risk_level"] in ("CRITICAL", "HIGH") and r["vulnerabilities"]:
+            console.print(f"\n[bold red]⚠ CVEs for {r['package']}:[/]")
+            for v in r["vulnerabilities"]:
+                sev_color = {"CRITICAL": "red", "HIGH": "red", "MEDIUM": "yellow"}.get(
+                    v["severity"], "white"
+                )
+                console.print(
+                    f"  [{sev_color}]• {v['id']}[/] [{v['severity']}] — {v['summary']}"
+                )
+
+
+def print_plain_report(data: dict, min_risk: str):
+    results = filter_by_risk(data["results"], min_risk)
+    print(f"\n=== Dependency Risk Report ===")
+    print(f"Ecosystem: {data['ecosystem'].upper()}")
+    print(f"Packages:  {data['total_packages']}")
+    print(f"CRITICAL: {data['critical']}  HIGH: {data['high']}  MEDIUM: {data['medium']}  LOW: {data['low']}\n")
+    for r in results:
+        print(f"[{r['risk_level']:8}] {r['package']:30} score={r['risk_score']:3}  "
+              f"cves={r['vulnerability_count']}  maint={r['maintenance']}  "
+              f"license_risk={r['license_risk']}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="AI-powered dependency risk scanner",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+                epilog=__doc__,
+    )
+    parser.add_argument("path", nargs="?", default=".", help="Path to repo (default: .)")
+    parser.add_argument(
+        "--format", choices=["table", "json"], default="table",
+        help="Output format (default: table)"
+    )
+    parser.add_argument(
+        "--min-risk", choices=["LOW", "MEDIUM", "HIGH", "CRITICAL"], default="LOW",
+        help="Minimum risk level to display (default: LOW)"
+    )
+    parser.add_argument(
+        "--ai-summary", action="store_true",
+        help="Generate an AI narrative summary using Claude (requires ANTHROPIC_API_KEY)"
+    )
+    parser.add_argument(
+        "--output", metavar="FILE",
+        help="Export HTML report to a file (e.g., report.html)"
+    )
+    args = parser.parse_args()
+
+    repo_path = Path(args.path).resolve()
+    if not repo_path.exists():
+        print(f"Error: path '{repo_path}' does not exist.", file=sys.stderr)
+        sys.exit(1)
+
+    if HAS_RICH:
+        with console.status(f"[cyan]Scanning {repo_path} ...[/]", spinner="dots"):
+            data = scan_repo(str(repo_path))
+    else:
+        print(f"Scanning {repo_path} ...")
+        data = scan_repo(str(repo_path))
+
+    if "error" in data:
+        print(f"Error: {data['error']}", file=sys.stderr)
+        sys.exit(1)
+    # Output
+    if args.format == "json":
+        print(json.dumps(data, indent=2))
+    else:
+        if HAS_RICH:
+            print_rich_report(data, args.min_risk)
+        else:
+            print_plain_report(data, args.min_risk)
+
+    # AI narrative
+    if args.ai_summary:
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if not api_key:
+            print("\n⚠ ANTHROPIC_API_KEY not set. Skipping AI summary.", file=sys.stderr)
+        else:
+            if HAS_RICH:
+                with console.status("[cyan]Generating AI summary...[/]", spinner="dots"):
+                    summary = generate_ai_summary(data, api_key)
+            else:
+                print("\nGenerating AI summary...")
+                summary = generate_ai_summary(data, api_key)
+
+            if HAS_RICH:
+                console.print(Panel(summary, title="[bold magenta]🤖 AI Risk Summary[/]", border_style="magenta"))
+            else:
+                print("\n=== AI Risk Summary ===")
+                print(summary)
+
+
+
+
 
 
 
