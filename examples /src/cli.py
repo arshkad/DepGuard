@@ -32,3 +32,22 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.scanner import scan_repo
 from src.ai_summary import generate_ai_summary
 from src.report import generate_html_report
+console = Console() if HAS_RICH else None
+
+RISK_COLORS = {
+    "CRITICAL": "bold red",
+    "HIGH": "red",
+    "MEDIUM": "yellow",
+    "LOW": "green",
+}
+
+RISK_EMOJI = {
+    "CRITICAL": "🔴",
+    "HIGH": "🟠",
+    "MEDIUM": "🟡",
+    "LOW": "🟢",
+}
+
+RISK_ORDER = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
+
+
