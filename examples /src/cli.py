@@ -205,6 +205,29 @@ def main():
             else:
                 print("\n=== AI Risk Summary ===")
                 print(summary)
+    # HTML report
+    if args.output:
+        html = generate_html_report(data)
+        Path(args.output).write_text(html)
+        if HAS_RICH:
+            console.print(f"\n[green]✅ HTML report saved to {args.output}[/]")
+        else:
+            print(f"\nHTML report saved to {args.output}")
+
+    # Exit code reflects risk level
+    if data["critical"] > 0:
+        sys.exit(3)
+    elif data["high"] > 0:
+        sys.exit(2)
+    elif data["medium"] > 0:
+        sys.exit(1)
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+
+
 
 
 
