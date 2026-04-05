@@ -276,3 +276,47 @@ header {
   }
   
   .dim { color: var(--muted); }
+  /* â”€â”€ Badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.badge {
+    display: inline-block;
+    padding: 0.2em 0.55em;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .badge-critical { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical); }
+  .badge-high     { background: var(--high-bg);     color: var(--high);     border: 1px solid var(--high); }
+  .badge-medium   { background: var(--medium-bg);   color: var(--medium);   border: 1px solid var(--medium); }
+  .badge-low      { background: var(--low-bg);      color: var(--low);      border: 1px solid var(--low); }
+  
+  .score { font-weight: 700; }
+  .score-critical { color: var(--critical); }
+  .score-high     { color: var(--high); }
+  .score-medium   { color: var(--medium); }
+  .score-low      { color: var(--low); }
+  
+  .cve-count { color: var(--critical); font-weight: 600; }
+  
+  /* â”€â”€ Maintenance / License â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .maint-abandoned { color: var(--critical); }
+  .maint-stale     { color: var(--medium); }
+  .maint-active    { color: var(--low); }
+  .maint-unknown   { color: var(--muted); }
+  
+  .lic-high    { color: var(--critical); }
+  .lic-medium  { color: var(--medium); }
+  .lic-low     { color: var(--low); }
+  .lic-unknown { color: var(--muted); }
+  
+  /* â”€â”€ CVE List â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .cve-list { margin-top: 0.35rem; }
+  .cve-item { font-size: 0.78rem; color: var(--muted); padding: 0.1rem 0; line-height: 1.4; }
+  .cve-id   { font-weight: 600; margin-right: 0.2rem; }
+  .cve-sev  { margin-right: 0.25rem; }
+  .sev-critical .cve-id { color: var(--critical); }
+  .sev-high .cve-id     { color: var(--high); }
+  .sev-medium .cve-id   { color: var(--medium); }
+  .cve-more { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 0.15rem; }
+  
