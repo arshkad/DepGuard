@@ -171,4 +171,34 @@ header {
 .card.critical .card-num { color: var(--critical); }
 .card.high { border-color: var(--high); background: var(--high-bg); }
 .card.high .card-num { color: var(--high); }
-  
+.card.medium { border-color: var(--medium); background: var(--medium-bg); }
+.card.medium .card-num { color: var(--medium); }
+.card.low { border-color: var(--low); background: var(--low-bg); }
+.card.low .card-num { color: var(--low); }
+.card.total .card-num { color: var(--text); }
+
+/* â”€â”€ AI Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.ai-panel {
+  background: #1a1a2e;
+  border: 1px solid #4f46e5;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.ai-header {
+  background: #4f46e5;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.ai-body {
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #c7d2fe;
+}
+
+/* â”€â”€ Results Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.results-section { margin-bottom: 2rem; }
