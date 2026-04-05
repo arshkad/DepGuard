@@ -202,3 +202,77 @@ header {
 
 /* â”€â”€ Results Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .results-section { margin-bottom: 2rem; }
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .results-header h2 { font-size: 1.1rem; font-weight: 600; }
+  
+  .eco-badge {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.1em 0.5em;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  .download-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .download-btn:hover { border-color: var(--accent); color: var(--accent-hover); }
+  
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  
+  thead { background: var(--surface2); }
+  
+  th {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  
+  td {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border);
+    vertical-align: top;
+  }
+  
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  
+  code {
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    font-size: 0.82rem;
+    color: #a5b4fc;
+  }
+  
+  .dim { color: var(--muted); }
