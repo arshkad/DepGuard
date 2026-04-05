@@ -123,4 +123,52 @@ header {
     white-space: nowrap;
     transition: background 0.15s, opacity 0.15s;
   }
+  .input-row button:hover { background: var(--accent-hover); }
+.input-row button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.hint { color: var(--muted); font-size: 0.8rem; margin-top: 0.6rem; }
+
+/* â”€â”€ Features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.feat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.feat-title { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.95rem; }
+.feat-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+/* â”€â”€ Summary Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-num { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+.card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase;
+              letter-spacing: 0.07em; margin-top: 0.3rem; }
+
+.card.critical { border-color: var(--critical); background: var(--critical-bg); }
+.card.critical .card-num { color: var(--critical); }
+.card.high { border-color: var(--high); background: var(--high-bg); }
+.card.high .card-num { color: var(--high); }
   
