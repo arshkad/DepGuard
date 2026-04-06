@@ -25,4 +25,29 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
+def clone_repo(github_url: str, dest: str) -> bool:
+    """Shallow-clone a public GitHub repo. Returns True on success."""
+    try:
+        result = subprocess.run(
+            ["git", "clone", "--depth", "1", "--quiet", github_url, dest],
+            timeout=60,
+            capture_output=True,
+        )
+        return result.returncode == 0
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        return False
+
+
+def normalize_github_url(url: str) -> str:
+    """Accept github.com/user/repo or full https URL."""
+    url = url.strip().rstrip("/")
+    if url.startswith("http"):
+        return url
+    if url.startswith("github.com"):
+        return f"https://{url}"
+    # assume user/repo shorthand
+    if "/" in url and not url.startswith("https"):
+        return f"https://github.com/{url}"
+    return url
+
 
