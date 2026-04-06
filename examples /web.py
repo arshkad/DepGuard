@@ -49,7 +49,7 @@ def normalize_github_url(url: str) -> str:
     if "/" in url and not url.startswith("https"):
         return f"https://github.com/{url}"
     return url
-    
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -81,5 +81,21 @@ async def scan(request: Request, repo_url: str = Form(...)):
                 "request": request,
                 "error": f"No supported dependency file found in this repo (requirements.txt, pyproject.toml, or package.json).",
             })
+
+        # Optional AI summary
+        ai_summary = None
+        if ANTHROPIC_API_KEY:
+            from src.ai_summary import generate_ai_summary
+            ai_summary = generate_ai_summary(data, ANTHROPIC_API_KEY)
+
+        return templates.TemplateResponse("results.html", {
+            "request": request,
+            "data": data,
+            "repo_url": repo_url,
+            "ai_summary": ai_summary,
+            "has_ai": bool(ANTHROPIC_API_KEY),
+        })
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
