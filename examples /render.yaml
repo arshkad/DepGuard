@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: depsentinel
+    name: depguard
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn web:app --host 0.0.0.0 --port $PORT
