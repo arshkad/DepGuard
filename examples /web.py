@@ -99,3 +99,24 @@ async def scan(request: Request, repo_url: str = Form(...)):
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
+@app.post("/scan/download")
+async def download_report(repo_url: str = Form(...)):
+    """Return the HTML report as a downloadable file."""
+    from fastapi.responses import Response
+    repo_url = normalize_github_url(repo_url)
+    tmp_dir = tempfile.mkdtemp(prefix="depscan_dl_")
+    try:
+        clone_repo(repo_url, tmp_dir)
+        data = scan_repo(tmp_dir)
+        html = generate_html_report(data)
+        return Response(
+            content=html,
+            media_type="text/html",
+            headers={"Content-Disposition": "attachment; filename=dep-risk-report.html"},
+        )
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
+
+
