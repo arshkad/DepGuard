@@ -49,5 +49,37 @@ def normalize_github_url(url: str) -> str:
     if "/" in url and not url.startswith("https"):
         return f"https://github.com/{url}"
     return url
+    
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.post("/scan", response_class=HTMLResponse)
+async def scan(request: Request, repo_url: str = Form(...)):
+    repo_url = normalize_github_url(repo_url)
+
+    if "github.com" not in repo_url:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": "Please enter a valid GitHub repository URL.",
+        })
+
+    tmp_dir = tempfile.mkdtemp(prefix=f"depscan_{uuid.uuid4().hex[:8]}_")
+    try:
+        success = clone_repo(repo_url, tmp_dir)
+        if not success:
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "error": "Could not clone repository. Make sure it's public and the URL is correct.",
+            })
+
+        data = scan_repo(tmp_dir)
+
+        if "error" in data:
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "error": f"No supported dependency file found in this repo (requirements.txt, pyproject.toml, or package.json).",
+            })
 
 
