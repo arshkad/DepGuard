@@ -25,3 +25,43 @@
     {% if error %}
     <div class="error-banner">⚠ {{ error }}</div>
     {% endif %}
+    <form method="POST" action="/scan" id="scan-form">
+        <div class="input-wrap">
+          <input
+            type="text"
+            name="repo_url"
+            class="repo-input"
+            placeholder="github.com/user/repo"
+            required
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" id="scan-btn">
+            <span class="btn-text">▸ scan</span>
+            <span class="btn-loading" hidden>scanning…</span>
+          </button>
+        </div>
+      </form>
+      <p class="hint">supports requirements.txt · pyproject.toml · package.json</p>
+  
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="term-title">depguard scan results</span>
+        </div>
+        <div class="term-body">
+          <div><span class="t-dim">$</span> <span class="t-green">depguard</span> <span class="t-white">scan github.com/example/app</span></div>
+          <div><span class="t-dim">→ cloning repo...</span></div>
+          <div><span class="t-dim">→ scanning 24 packages...</span></div>
+          <div class="term-spacer"></div>
+          <div><span class="t-red">[CRITICAL]</span> <span class="t-white">pillow==9.0.0</span> <span class="t-dim">score=85 · 6 CVEs · active</span></div>
+          <div><span class="t-red">[CRITICAL]</span> <span class="t-white">flask==1.1.2</span> <span class="t-dim">score=70 · 4 CVEs · active</span></div>
+          <div><span class="t-yellow">[HIGH]&nbsp;&nbsp;&nbsp;</span> <span class="t-white">pyyaml==5.4.1</span> <span class="t-dim">score=55 · 3 CVEs · active</span></div>
+          <div><span class="t-yellow">[HIGH]&nbsp;&nbsp;&nbsp;</span> <span class="t-white">paramiko==2.8.0</span> <span class="t-dim">score=40 · 2 CVEs · stale</span></div>
+          <div class="term-spacer"></div>
+          <div><span class="t-dim">summary → </span><span class="t-red">2 critical</span><span class="t-dim"> · </span><span class="t-yellow">2 high</span><span class="t-dim"> · </span><span class="t-blue">3 medium</span><span class="t-dim"> · </span><span class="t-green">17 low</span></div>
+        </div>
+      </div>
+  
