@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DepSentinel — Dependency Risk Scanner</title>
+  <title>DepGuard — Dependency Risk Scanner</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-  <header>
-    <div class="logo">🔍 DepSentinel</div>
-    <p class="tagline">Scan any public GitHub repo for dependency vulnerabilities, abandoned packages, and license risks — in seconds.</p>
-  </header>
+
+  <nav class="nav">
+    <div class="logo">dep<span>Guard</span></div>
+    <div class="nav-links">
+      <a href="https://github.com/yourname/depguard" target="_blank">github</a>
+      <span class="version">v0.1.0</span>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <div class="badge">▸ open source · free · no login required</div>
+    <h1>Scan any repo for<br><span class="accent">dependency risks</span></h1>
+    <p class="sub">CVE detection, abandoned package flagging, and license risk analysis — powered by OSV.dev and Claude AI.</p>
+
+    {% if error %}
+    <div class="error-banner">⚠ {{ error }}</div>
+    {% endif %}
