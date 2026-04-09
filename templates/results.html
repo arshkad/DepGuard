@@ -51,12 +51,71 @@
           <div class="scard-label">total</div>
         </div>
       </div>
-      
+
 <!-- AI Summary -->
     {% if ai_summary %}
     <div class="ai-panel">
       <div class="ai-header">▸ AI risk summary <span class="ai-tag">claude</span></div>
       <div class="ai-body">{{ ai_summary }}</div>
     </div>
-    {% endif %}
+
+<!-- Terminal-style results table -->
+    <div class="terminal results-terminal">
+        <div class="term-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="term-title">{{ data.total_packages }} packages · {{ data.ecosystem }}</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>package</th>
+                <th>risk</th>
+                <th>score</th>
+                <th>cves</th>
+                <th>maintenance</th>
+                <th>license</th>
+                <th>pinned</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in data.results %}
+              <tr>
+                <td>
+                  <span class="pkg-name">{{ r.package }}</span>
+                  {% if r.vulnerabilities %}
+                  <div class="cve-list">
+                    {% for v in r.vulnerabilities[:3] %}
+                    <div class="cve-item">
+                      <span class="cve-id sev-{{ v.severity | lower }}">{{ v.id }}</span>
+                      <span class="cve-sev">[{{ v.severity }}]</span>
+                      {{ v.summary[:90] }}{% if v.summary|length > 90 %}…{% endif %}
+                    </div>
+                    {% endfor %}
+                    {% if r.vulnerability_count > 3 %}
+                    <div class="cve-more">+{{ r.vulnerability_count - 3 }} more</div>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                </td>
+                <td><span class="badge badge-{{ r.risk_level | lower }}">{{ r.risk_level }}</span></td>
+                <td><span class="score-num score-{{ r.risk_level | lower }}">{{ r.risk_score }}</span></td>
+                <td>
+                  {% if r.vulnerability_count > 0 %}
+                  <span class="t-red">{{ r.vulnerability_count }}</span>
+                  {% else %}
+                  <span class="t-dim">0</span>
+                  {% endif %}
+                </td>
+                <td><span class="maint maint-{{ r.maintenance }}">{{ r.maintenance }}</span></td>
+                <td><span class="lic lic-{{ r.license_risk }}">{{ r.license_risk }}</span></td>
+                <td><code>{{ r.pinned_version or "unpinned" }}</code></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
       
