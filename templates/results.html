@@ -28,4 +28,27 @@
             <button type="submit" class="dl-btn">⬇ download report</button>
           </form>
         </div>
-    
+          <!-- Summary cards -->
+    <div class="summary-cards">
+        <div class="scard critical">
+          <div class="scard-num">{{ data.critical }}</div>
+          <div class="scard-label">critical</div>
+        </div>
+        <div class="scard high">
+          <div class="scard-num">{{ data.high }}</div>
+          <div class="scard-label">high</div>
+        </div>
+        <div class="scard medium">
+          <div class="scard-num">{{ data.medium }}</div>
+          <div class="scard-label">medium</div>
+        </div>
+        <div class="scard low">
+          <div class="scard-num">{{ data.low }}</div>
+          <div class="scard-label">low</div>
+        </div>
+        <div class="scard total">
+          <div class="scard-num">{{ data.total_packages }}</div>
+          <div class="scard-label">total</div>
+        </div>
+      </div>
+      
