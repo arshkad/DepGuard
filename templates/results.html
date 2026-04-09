@@ -8,3 +8,24 @@
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
+    <nav class="nav">
+        <a href="/" class="logo">dep<span>Guard</span></a>
+        <div class="nav-links">
+          <a href="https://github.com/yourname/depguard" target="_blank">github</a>
+          <span class="version">v0.1.0</span>
+        </div>
+      </nav>
+    
+      <main class="results-main">
+    
+        <div class="results-header">
+          <div class="repo-scanned">
+            <span class="t-dim">scanned →</span>
+            <span class="t-blue">{{ repo_url }}</span>
+          </div>
+          <form method="POST" action="/scan/download" style="display:inline">
+            <input type="hidden" name="repo_url" value="{{ repo_url }}" />
+            <button type="submit" class="dl-btn">⬇ download report</button>
+          </form>
+        </div>
+    
