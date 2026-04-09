@@ -52,3 +52,11 @@
         </div>
       </div>
       
+<!-- AI Summary -->
+    {% if ai_summary %}
+    <div class="ai-panel">
+      <div class="ai-header">▸ AI risk summary <span class="ai-tag">claude</span></div>
+      <div class="ai-body">{{ ai_summary }}</div>
+    </div>
+    {% endif %}
+      
