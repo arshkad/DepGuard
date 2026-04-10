@@ -252,3 +252,65 @@ h1 {
   color: var(--muted);
   line-height: 1.6;
 }
+/* â”€â”€ Results page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.results-main {
+  flex: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  width: 100%;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.repo-scanned { font-size: 12px; }
+
+.dl-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.dl-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+/* â”€â”€ Summary cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.scard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.scard-num { font-size: 24px; font-weight: 700; line-height: 1; }
+.scard-label { font-size: 10px; color: var(--muted); margin-top: 5px; letter-spacing: 0.06em; }
+
+.scard.critical { border-color: var(--accent-red); }
+.scard.critical .scard-num { color: var(--accent-red); }
+.scard.high { border-color: var(--accent-yellow); }
+.scard.high .scard-num { color: var(--accent-yellow); }
+.scard.medium { border-color: #e3b341; }
+.scard.medium .scard-num { color: #e3b341; }
+.scard.low { border-color: var(--accent-green); }
+.scard.low .scard-num { color: var(--accent-green); }
+.scard.total .scard-num { color: var(--text); }
