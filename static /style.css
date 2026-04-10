@@ -424,3 +424,18 @@ code {
 .maint-stale     { color: var(--accent-yellow); }
 .maint-active    { color: var(--accent-green); }
 .maint-unknown   { color: var(--muted); }
+.lic-high    { color: var(--accent-red); }
+.lic-medium  { color: var(--accent-yellow); }
+.lic-low     { color: var(--accent-green); }
+.lic-unknown { color: var(--muted); }
+
+/* â”€â”€ CVE list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cve-list { margin-top: 6px; }
+.cve-item { font-size: 11px; color: var(--muted); line-height: 1.6; padding: 1px 0; }
+.cve-id { font-weight: 700; margin-right: 4px; }
+.cve-sev { margin-right: 4px; color: var(--dim); }
+.cve-more { font-size: 10px; color: var(--dim); font-style: italic; margin-top: 2px; }
+
+.sev-critical { color: var(--accent-red); }
+.sev-high     { color: var(--accent-yellow); }
+.sev-medium   { color: #e3b341; }
