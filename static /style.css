@@ -41,3 +41,25 @@ a:hover { text-decoration: underline; }
   padding: 14px 28px;
   border-bottom: 1px solid var(--border);
 }
+
+.logo {
+  color: var(--accent-blue);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.logo span { color: var(--accent-green); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.nav-links a { color: var(--muted); }
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+
+.version { color: var(--accent-green); }
