@@ -397,3 +397,30 @@ code {
   color: var(--accent-blue);
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* â”€â”€ Badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.badge-critical { background: #2d1515; color: var(--accent-red);    border: 1px solid var(--accent-red); }
+.badge-high     { background: #2a1a08; color: var(--accent-yellow);  border: 1px solid var(--accent-yellow); }
+.badge-medium   { background: #2a2208; color: #e3b341;               border: 1px solid #e3b341; }
+.badge-low      { background: #0d2a18; color: var(--accent-green);   border: 1px solid var(--accent-green); }
+
+.score-num { font-weight: 700; }
+.score-critical { color: var(--accent-red); }
+.score-high     { color: var(--accent-yellow); }
+.score-medium   { color: #e3b341; }
+.score-low      { color: var(--accent-green); }
+
+/* â”€â”€ Maintenance / License â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.maint-abandoned { color: var(--accent-red); }
+.maint-stale     { color: var(--accent-yellow); }
+.maint-active    { color: var(--accent-green); }
+.maint-unknown   { color: var(--muted); }
