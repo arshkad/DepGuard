@@ -2,6 +2,9 @@
 DepGuardWeb — FastAPI backend.
 """
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 import os
 import shutil
 import subprocess
