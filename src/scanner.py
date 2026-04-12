@@ -78,7 +78,8 @@ def detect_and_parse(repo_path: Path) -> tuple[dict[str, str], str]:
 
 def query_osv(package_name: str, ecosystem: str) -> list[dict]:
     """Query OSV.dev for known vulnerabilities."""
-       eco = eco_map.get(ecosystem, "PyPI")
+    eco_map = {"pypi": "PyPI", "npm": "npm"}
+    eco = eco_map.get(ecosystem, "PyPI")
     try:
         resp = requests.post(
             "https://api.osv.dev/v1/query",
@@ -156,7 +157,7 @@ def check_abandonment(last_release: Optional[str]) -> str:
         release_dt = datetime.fromisoformat(last_release.replace("Z", "+00:00"))
         now = datetime.now(timezone.utc)
         days_since = (now - release_dt).days
-                if days_since < 365:
+        if days_since < 365:
             return "active"
         elif days_since < 730:
             return "stale"
@@ -191,7 +192,7 @@ def score_package(vulns: list, maintenance: str, license_risk: str) -> tuple[int
 
     if score >= 60:
         level = "CRITICAL"
-            elif score >= 35:
+    elif score >= 35:
         level = "HIGH"
     elif score >= 15:
         level = "MEDIUM"
