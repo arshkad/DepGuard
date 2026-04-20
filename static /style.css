@@ -1,4 +1,4 @@
-/* â”€â”€ Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Base ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +33,7 @@ body {
 a { color: var(--accent-blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* â”€â”€ Nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Nav ──────────────────────────────────────────────────── */
 .nav {
   display: flex;
   align-items: center;
@@ -64,7 +64,7 @@ a:hover { text-decoration: underline; }
 
 .version { color: var(--accent-green); }
 
-/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Hero ─────────────────────────────────────────────────── */
 .hero {
   flex: 1;
   text-align: center;
@@ -94,6 +94,7 @@ h1 {
   margin-bottom: 14px;
   letter-spacing: -0.03em;
 }
+
 .accent { color: var(--accent-blue); }
 
 .sub {
@@ -105,7 +106,7 @@ h1 {
   line-height: 1.7;
 }
 
-/* â”€â”€ Input â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Input ────────────────────────────────────────────────── */
 .input-wrap {
   display: flex;
   gap: 8px;
@@ -132,6 +133,7 @@ h1 {
 }
 
 .repo-input::placeholder { color: var(--dim); }
+
 .input-wrap button {
   background: #238636;
   color: #fff;
@@ -156,7 +158,7 @@ h1 {
   font-family: -apple-system, sans-serif;
 }
 
-/* â”€â”€ Error â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Error ────────────────────────────────────────────────── */
 .error-banner {
   background: #2d1515;
   border: 1px solid var(--accent-red);
@@ -170,7 +172,8 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
-/* â”€â”€ Terminal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* ── Terminal ─────────────────────────────────────────────── */
 .terminal {
   max-width: 560px;
   margin: 28px auto 0;
@@ -213,7 +216,8 @@ h1 {
 }
 
 .term-spacer { height: 6px; }
-* â”€â”€ Terminal text colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* ── Terminal text colors ─────────────────────────────────── */
 .t-dim    { color: var(--dim); }
 .t-green  { color: var(--accent-green); }
 .t-blue   { color: var(--accent-blue); }
@@ -222,7 +226,7 @@ h1 {
 .t-white  { color: #e6edf3; }
 .t-purple { color: var(--accent-purple); }
 
-/* â”€â”€ Features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Features ─────────────────────────────────────────────── */
 .feats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -252,7 +256,8 @@ h1 {
   color: var(--muted);
   line-height: 1.6;
 }
-/* â”€â”€ Results page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* ── Results page ─────────────────────────────────────────── */
 .results-main {
   flex: 1;
   max-width: 1100px;
@@ -286,7 +291,7 @@ h1 {
 
 .dl-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
 
-/* â”€â”€ Summary cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Summary cards ────────────────────────────────────────── */
 .summary-cards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -315,7 +320,7 @@ h1 {
 .scard.low .scard-num { color: var(--accent-green); }
 .scard.total .scard-num { color: var(--text); }
 
-/* â”€â”€ AI Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── AI Panel ─────────────────────────────────────────────── */
 .ai-panel {
   background: #0d0f2a;
   border: 1px solid #4f46e5;
@@ -350,7 +355,8 @@ h1 {
   color: #c7d2fe;
   line-height: 1.7;
 }
-/* â”€â”€ Results table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* ── Results table ────────────────────────────────────────── */
 .results-terminal {
   max-width: 100%;
   margin: 0;
@@ -398,7 +404,7 @@ code {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* â”€â”€ Badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Badges ───────────────────────────────────────────────── */
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -419,17 +425,18 @@ code {
 .score-medium   { color: #e3b341; }
 .score-low      { color: var(--accent-green); }
 
-/* â”€â”€ Maintenance / License â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Maintenance / License ────────────────────────────────── */
 .maint-abandoned { color: var(--accent-red); }
 .maint-stale     { color: var(--accent-yellow); }
 .maint-active    { color: var(--accent-green); }
 .maint-unknown   { color: var(--muted); }
+
 .lic-high    { color: var(--accent-red); }
 .lic-medium  { color: var(--accent-yellow); }
 .lic-low     { color: var(--accent-green); }
 .lic-unknown { color: var(--muted); }
 
-/* â”€â”€ CVE list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── CVE list ─────────────────────────────────────────────── */
 .cve-list { margin-top: 6px; }
 .cve-item { font-size: 11px; color: var(--muted); line-height: 1.6; padding: 1px 0; }
 .cve-id { font-weight: 700; margin-right: 4px; }
@@ -440,7 +447,7 @@ code {
 .sev-high     { color: var(--accent-yellow); }
 .sev-medium   { color: #e3b341; }
 
-/* â”€â”€ Scan again â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Scan again ───────────────────────────────────────────── */
 .scan-again { text-align: center; margin-top: 28px; }
 
 .scan-again-btn {
@@ -461,7 +468,7 @@ code {
   text-decoration: none;
 }
 
-/* â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Footer ───────────────────────────────────────────────── */
 footer {
   text-align: center;
   padding: 16px 24px;
@@ -473,7 +480,7 @@ footer {
 
 footer a { color: var(--accent-blue); }
 
-/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 640px) {
   .summary-cards { grid-template-columns: repeat(3, 1fr); }
   .feats { grid-template-columns: 1fr; }
