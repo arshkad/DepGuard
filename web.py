@@ -107,3 +107,7 @@ async def download_report(repo_url: str = Form(...)):
         )
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+        
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
