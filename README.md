@@ -45,4 +45,6 @@ python cli.py . --format json | jq '.results[] | select(.risk_level == "CRITICAL
 git clone https://github.com/yourname/dep-risk-scanner
 cd dep-risk-scanner
 pip install -e ".[dev]"
+
+## Still working on deploying this live 
 ```
