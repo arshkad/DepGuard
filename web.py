@@ -24,7 +24,12 @@ except Exception as e:
 app = FastAPI(title="DepGuard")
 
 BASE_DIR = Path(__file__).parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+from jinja2 import Environment, FileSystemLoader
+from starlette.templating import Jinja2Templates
+
+jinja_env = Environment(loader=FileSystemLoader(str(BASE_DIR / "templates")))
+templates = Jinja2Templates(env=jinja_env)
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
