@@ -16,15 +16,15 @@ try:
     from fastapi.templating import Jinja2Templates
     from src.scanner import scan_repo
     from src.report import generate_html_report
-    print("✅ All imports successful", flush=True)
+    print("All imports successful", flush=True)
 except Exception as e:
-    print(f"❌ Import error: {e}", flush=True)
+    print(f"Import error: {e}", flush=True)
     sys.exit(1)
 
 app = FastAPI(title="DepGuard")
 
 BASE_DIR = Path(__file__).parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"), autoescape=True)
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
