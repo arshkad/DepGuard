@@ -41,20 +41,13 @@ def clone_repo(github_url: str, dest: str) -> bool:
             ["git", "clone", "--depth", "1", "--quiet", github_url, dest],
             timeout=60, capture_output=True,
         )
+        print(f"CLONE stdout: {result.stdout.decode()}", flush=True)
+        print(f"CLONE stderr: {result.stderr.decode()}", flush=True)
+        print(f"CLONE returncode: {result.returncode}", flush=True)
         return result.returncode == 0
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except Exception as e:
+        print(f"CLONE EXCEPTION: {e}", flush=True)
         return False
-
-
-def normalize_github_url(url: str) -> str:
-    url = url.strip().rstrip("/")
-    if url.startswith("http"):
-        return url
-    if url.startswith("github.com"):
-        return f"https://{url}"
-    if "/" in url:
-        return f"https://github.com/{url}"
-    return url
 
 
 @app.get("/", response_class=HTMLResponse)
