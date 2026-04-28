@@ -61,9 +61,9 @@ def normalize_github_url(url: str) -> str:
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
 @app.post("/scan", response_class=HTMLResponse)
 async def scan(request: Request, repo_url: str = Form(...)):
+    import traceback
     repo_url = normalize_github_url(repo_url)
     if "github.com" not in repo_url:
         return templates.TemplateResponse("index.html", {
@@ -93,23 +93,13 @@ async def scan(request: Request, repo_url: str = Form(...)):
             "repo_url": repo_url,
             "ai_summary": ai_summary,
         })
-    finally:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-
-
-@app.post("/scan/download")
-async def download_report(repo_url: str = Form(...)):
-    repo_url = normalize_github_url(repo_url)
-    tmp_dir = tempfile.mkdtemp(prefix="depguard_dl_")
-    try:
-        clone_repo(repo_url, tmp_dir)
-        data = scan_repo(tmp_dir)
-        html = generate_html_report(data)
-        return Response(
-            content=html,
-            media_type="text/html",
-            headers={"Content-Disposition": "attachment; filename=depguard-report.html"},
-        )
+    except Exception as e:
+        print(f"SCAN ERROR: {e}", flush=True)
+        traceback.print_exc()
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": f"Scan failed: {str(e)}",
+        })
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
         
