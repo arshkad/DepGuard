@@ -161,7 +161,71 @@ async def download_report(repo_url: str = Form(...)):
         media_type="text/html",
         headers={"Content-Disposition": "attachment; filename=depguard-report.html"},
     )
- 
+    
+@app.get("/badge/{owner}/{repo}")
+async def badge(owner: str, repo: str):
+    """Generate an SVG badge showing the highest risk level for a repo."""
+    try:
+        data = scan_from_github(owner, repo)
+
+        if "error" in data:
+            label = "depguard"
+            status = "unknown"
+            color = "#9e9e9e"
+        elif data["critical"] > 0:
+            label = "depguard"
+            status = f"{data['critical']} critical"
+            color = "#e53935"
+        elif data["high"] > 0:
+            label = "depguard"
+            status = f"{data['high']} high"
+            color = "#f97316"
+        elif data["medium"] > 0:
+            label = "depguard"
+            status = f"{data['medium']} medium"
+            color = "#f59e0b"
+        else:
+            label = "depguard"
+            status = "secure"
+            color = "#22c55e"
+
+    except Exception as e:
+        print(f"Badge error: {e}", flush=True)
+        label = "depguard"
+        status = "error"
+        color = "#9e9e9e"
+
+    # Calculate widths
+    label_width = len(label) * 7 + 10
+    status_width = len(status) * 7 + 10
+    total_width = label_width + status_width
+
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{total_width}" height="20">
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="{total_width}" height="20" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="{label_width}" height="20" fill="#555"/>
+    <rect x="{label_width}" width="{status_width}" height="20" fill="{color}"/>
+    <rect width="{total_width}" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="{label_width // 2}" y="15" fill="#010101" fill-opacity=".3">{label}</text>
+    <text x="{label_width // 2}" y="14">{label}</text>
+    <text x="{label_width + status_width // 2}" y="15" fill="#010101" fill-opacity=".3">{status}</text>
+    <text x="{label_width + status_width // 2}" y="14">{status}</text>
+  </g>
+</svg>"""
+
+    return Response(
+        content=svg,
+        media_type="image/svg+xml",
+        headers={"Cache-Control": "max-age=3600"},
+    )
  
 if __name__ == "__main__":
     import uvicorn
