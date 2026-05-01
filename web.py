@@ -1,91 +1,144 @@
 import logging
 import sys
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-
+ 
 import os
-import shutil
-import subprocess
 import tempfile
-import uuid
+import shutil
 from pathlib import Path
-
-try:
-    from fastapi import FastAPI, Request, Form
-    from fastapi.responses import HTMLResponse, Response
-    from fastapi.staticfiles import StaticFiles
-    from fastapi.templating import Jinja2Templates
-    from src.scanner import scan_repo
-    from src.report import generate_html_report
-    print("All imports successful", flush=True)
-except Exception as e:
-    print(f"Import error: {e}", flush=True)
-    sys.exit(1)
-
+ 
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, Response
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+ 
+import requests as http_requests
+ 
+from src.scanner import scan_repo
+from src.report import generate_html_report
+ 
+print("✅ All imports successful", flush=True)
+ 
 app = FastAPI(title="DepGuard")
-
+ 
 BASE_DIR = Path(__file__).parent
-
-from jinja2 import Environment, FileSystemLoader
-from starlette.templating import Jinja2Templates
-
-jinja_env = Environment(loader=FileSystemLoader(str(BASE_DIR / "templates")))
-templates = Jinja2Templates(env=jinja_env)
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
-
+ 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-
-
-def clone_repo(github_url: str, dest: str) -> bool:
+ 
+# Files we look for in priority order
+DEPENDENCY_FILES = [
+    "requirements.txt",
+    "pyproject.toml",
+    "package.json",
+]
+ 
+ 
+def parse_github_url(url: str) -> tuple[str, str] | None:
+    """Extract owner and repo from a GitHub URL. Returns (owner, repo) or None."""
+    url = url.strip().rstrip("/")
+    # Handle: https://github.com/owner/repo or github.com/owner/repo or owner/repo
+    for prefix in ["https://github.com/", "http://github.com/", "github.com/"]:
+        if url.startswith(prefix):
+            url = url[len(prefix):]
+            break
+    parts = url.split("/")
+    if len(parts) >= 2:
+        return parts[0], parts[1]
+    return None
+ 
+ 
+def fetch_file_from_github(owner: str, repo: str, filename: str) -> str | None:
+    """Fetch a file's raw content from a public GitHub repo."""
+    url = f"https://raw.githubusercontent.com/{owner}/{repo}/main/{filename}"
     try:
-        result = subprocess.run(
-            ["git", "clone", "--depth", "1", "--quiet", github_url, dest],
-            timeout=60, capture_output=True,
-        )
-        print(f"CLONE stdout: {result.stdout.decode()}", flush=True)
-        print(f"CLONE stderr: {result.stderr.decode()}", flush=True)
-        print(f"CLONE returncode: {result.returncode}", flush=True)
-        return result.returncode == 0
-    except Exception as e:
-        print(f"CLONE EXCEPTION: {e}", flush=True)
-        return False
-
-
+        resp = http_requests.get(url, timeout=15)
+        if resp.status_code == 200:
+            return resp.text
+        # Try master branch as fallback
+        url = f"https://raw.githubusercontent.com/{owner}/{repo}/master/{filename}"
+        resp = http_requests.get(url, timeout=15)
+        if resp.status_code == 200:
+            return resp.text
+    except http_requests.RequestException as e:
+        print(f"Error fetching {filename}: {e}", flush=True)
+    return None
+ 
+ 
+def fetch_repo_deps(owner: str, repo: str) -> tuple[str, str] | None:
+    """
+    Try to fetch a dependency file from the repo.
+    Returns (filename, content) or None if nothing found.
+    """
+    for filename in DEPENDENCY_FILES:
+        content = fetch_file_from_github(owner, repo, filename)
+        if content:
+            print(f"Found {filename} in {owner}/{repo}", flush=True)
+            return filename, content
+    return None
+ 
+ 
+def scan_from_github(owner: str, repo: str) -> dict:
+    """Download dep file and scan it without cloning."""
+    result = fetch_repo_deps(owner, repo)
+    if not result:
+        return {"error": "No supported dependency file found (requirements.txt, pyproject.toml, or package.json)."}
+ 
+    filename, content = result
+ 
+    # Write to a temp dir so scanner can read it
+    tmp_dir = tempfile.mkdtemp(prefix="depguard_")
+    try:
+        dep_file = Path(tmp_dir) / filename
+        dep_file.write_text(content)
+        return scan_repo(tmp_dir)
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+ 
+ 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
+ 
+ 
 @app.post("/scan", response_class=HTMLResponse)
 async def scan(request: Request, repo_url: str = Form(...)):
     import traceback
-    repo_url = normalize_github_url(repo_url)
-    if "github.com" not in repo_url:
+ 
+    repo_url = repo_url.strip()
+    parsed = parse_github_url(repo_url)
+ 
+    if not parsed:
         return templates.TemplateResponse("index.html", {
             "request": request,
-            "error": "Please enter a valid GitHub repository URL.",
+            "error": "Please enter a valid GitHub repository URL (e.g. github.com/user/repo).",
         })
-    tmp_dir = tempfile.mkdtemp(prefix=f"depguard_{uuid.uuid4().hex[:8]}_")
+ 
+    owner, repo = parsed
+    print(f"Scanning {owner}/{repo}", flush=True)
+ 
     try:
-        if not clone_repo(repo_url, tmp_dir):
-            return templates.TemplateResponse("index.html", {
-                "request": request,
-                "error": "Could not clone repository. Make sure it's public and the URL is correct.",
-            })
-        data = scan_repo(tmp_dir)
+        data = scan_from_github(owner, repo)
+ 
         if "error" in data:
             return templates.TemplateResponse("index.html", {
                 "request": request,
-                "error": "No supported dependency file found.",
+                "error": data["error"],
             })
+ 
         ai_summary = None
         if ANTHROPIC_API_KEY:
             from src.ai_summary import generate_ai_summary
             ai_summary = generate_ai_summary(data, ANTHROPIC_API_KEY)
+ 
         return templates.TemplateResponse("results.html", {
             "request": request,
             "data": data,
-            "repo_url": repo_url,
+            "repo_url": f"https://github.com/{owner}/{repo}",
             "ai_summary": ai_summary,
         })
+ 
     except Exception as e:
         print(f"SCAN ERROR: {e}", flush=True)
         traceback.print_exc()
@@ -93,9 +146,24 @@ async def scan(request: Request, repo_url: str = Form(...)):
             "request": request,
             "error": f"Scan failed: {str(e)}",
         })
-    finally:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-        
+ 
+ 
+@app.post("/scan/download")
+async def download_report(repo_url: str = Form(...)):
+    parsed = parse_github_url(repo_url)
+    if not parsed:
+        return Response(content="Invalid URL", status_code=400)
+    owner, repo = parsed
+    data = scan_from_github(owner, repo)
+    html = generate_html_report(data)
+    return Response(
+        content=html,
+        media_type="text/html",
+        headers={"Content-Disposition": "attachment; filename=depguard-report.html"},
+    )
+ 
+ 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+ 
