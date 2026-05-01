@@ -147,7 +147,6 @@ def assess_license_risk(license_str: str) -> str:
 
 
 # ── Abandonment Detection ────────────────────────────────────────────────────
-
 def check_abandonment(last_release: Optional[str]) -> str:
     """Return 'active', 'stale', or 'abandoned' based on last release date."""
     if not last_release:
@@ -155,6 +154,9 @@ def check_abandonment(last_release: Optional[str]) -> str:
     from datetime import datetime, timezone
     try:
         release_dt = datetime.fromisoformat(last_release.replace("Z", "+00:00"))
+        # Make sure both datetimes are timezone-aware
+        if release_dt.tzinfo is None:
+            release_dt = release_dt.replace(tzinfo=timezone.utc)
         now = datetime.now(timezone.utc)
         days_since = (now - release_dt).days
         if days_since < 365:
