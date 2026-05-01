@@ -487,3 +487,71 @@ footer a { color: var(--accent-blue); }
   .results-header { flex-direction: column; align-items: flex-start; }
   h1 { font-size: 22px; }
 }
+
+/* ── Badge Section ────────────────────────────────────────── */
+.badge-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.badge-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 12px;
+}
+
+.badge-preview {
+  margin-bottom: 12px;
+}
+
+.badge-preview img {
+  height: 20px;
+}
+
+.badge-code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+
+.badge-code-label {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge-snippet {
+  flex: 1;
+  font-size: 11px;
+  color: var(--accent-green);
+  background: transparent;
+  border: none;
+  padding: 0;
+  word-break: break-all;
+}
+
+.copy-btn {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
