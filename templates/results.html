@@ -17,7 +17,7 @@
       </nav>
     
       <main class="results-main">
-    
+        
         <div class="results-header">
           <div class="repo-scanned">
             <span class="t-dim">scanned →</span>
@@ -28,6 +28,19 @@
             <button type="submit" class="dl-btn">⬇ download report</button>
           </form>
         </div>
+
+        <div class="badge-section">
+          <div class="badge-header">▸ Add a badge to your README</div>
+          <div class="badge-preview">
+            <img src="/badge/{{ repo_url.split('github.com/')[1] }}" alt="DepGuard badge" />
+          </div>
+          <div class="badge-code">
+            <div class="badge-code-label">Markdown:</div>
+            <code class="badge-snippet">[![DepGuard](https://depguard-ba10.onrender.com/badge/{{ repo_url.split('github.com/')[1] }})](https://depguard-ba10.onrender.com)</code>
+            <button class="copy-btn" onclick="copyBadge(this)">copy</button>
+          </div>
+        </div>
+
           <!-- Summary cards -->
     <div class="summary-cards">
         <div class="scard critical">
