@@ -555,3 +555,82 @@ footer a { color: var(--accent-blue); }
   border-color: var(--accent-green);
   color: var(--accent-green);
 }
+
+/* ── Scan History ─────────────────────────────────────────── */
+.history-section {
+  max-width: 560px;
+  margin: 24px auto 0;
+  text-align: left;
+}
+
+.history-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 10px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-decoration: none;
+  transition: border-color 0.15s;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.history-item:hover {
+  border-color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.history-repo {
+  font-size: 12px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.history-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.h-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.h-critical { background: #2d1515; color: var(--accent-red);    border: 1px solid var(--accent-red); }
+.h-high     { background: #2a1a08; color: var(--accent-yellow);  border: 1px solid var(--accent-yellow); }
+.h-medium   { background: #2a2208; color: #e3b341;               border: 1px solid #e3b341; }
+.h-low      { background: #0d2a18; color: var(--accent-green);   border: 1px solid var(--accent-green); }
+
+.h-eco {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.h-total {
+  font-size: 10px;
+  color: var(--muted);
+}
