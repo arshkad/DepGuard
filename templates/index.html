@@ -83,7 +83,33 @@
         </div>
       </div>
     </main>
-  
+
+    {% if history %}
+    <section class="history-section">
+      <div class="history-header">▸ recently scanned</div>
+      <div class="history-list">
+        {% for item in history %}
+        <a href="#" class="history-item" onclick="document.querySelector('.repo-input').value='{{ item.repo_url }}'; return false;">
+          <div class="history-repo">{{ item.repo_url.replace('https://github.com/', '') }}</div>
+          <div class="history-meta">
+            {% if item.critical > 0 %}
+            <span class="h-badge h-critical">{{ item.critical }} critical</span>
+            {% elif item.high > 0 %}
+            <span class="h-badge h-high">{{ item.high }} high</span>
+            {% elif item.medium > 0 %}
+            <span class="h-badge h-medium">{{ item.medium }} medium</span>
+            {% else %}
+            <span class="h-badge h-low">secure</span>
+            {% endif %}
+            <span class="h-eco">{{ item.ecosystem }}</span>
+            <span class="h-total">{{ item.total }} packages</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+    
     <footer>
       built with python · fastapi · claude api · osv.dev &nbsp;·&nbsp;
       <a href="https://github.com/yourname/depguard" target="_blank">github.com/yourname/depguard</a>
